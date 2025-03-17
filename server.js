@@ -24,7 +24,7 @@ app.get("/protected",requireAuth(), (req, res) => {
 
 
 
-/*app.get("/",requireAuth(),async(req,res)=>{
+/*app.get("/",async(req,res)=>{
     try{
         const getUsers = await clerkClient.users.getUserList();
         res.json(getUsers)
