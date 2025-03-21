@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./src/config/db');
+const lessonRoutes = require("./src/routes/lessonRoutes");
 const {requireAuth,createClerkClient}= require("@clerk/express");
 //const {Clerk} = require('@clerk/clerk-sdk-node');
 
@@ -14,6 +15,10 @@ app.use(express.json());
 
 // Connect MongoDB
 connectDB();
+
+//connecting lessonRoutes
+app.use("/api", lessonRoutes);
+
 
 //console.log(app._router.stack);
 
