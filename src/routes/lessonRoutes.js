@@ -21,7 +21,6 @@ router.get("/lessons/category/:categoryID", async (req, res) => {
     try {
         const { categoryID } = req.params;
 
-        // Check if categoryID is a valid ObjectId
         if (!mongoose.Types.ObjectId.isValid(categoryID)) {
             console.log("Invalid ObjectId format:", categoryID);
             return res.status(400).json({ message: "Invalid category ID format" });
@@ -44,9 +43,6 @@ router.get("/lessons/category/:categoryID", async (req, res) => {
     }
 });
 
-
-
-
 /*router.get("/lessons/category/:categoryID",async(req,res)=>{
     try{
         const {categoryID}=req.params;
@@ -66,6 +62,22 @@ router.get("/lessons/category/:categoryID", async (req, res) => {
         res.status(500).json({message:"Error fetching lessons by category",error});
     };
 });*/
+
+//Get a single lesson
+router.get("/lessons/:id",async(req,res)=>{
+    try{
+        const {id} = req.params;
+        const lessons = await LessonContent.findById(id).populate("category");
+
+        if(!lessons){
+            return res.status(404).json({message:"Lesson not found"});
+        }
+
+        res.status(200).json(lessons);
+    }catch(error){
+        res.status(500).json({message:"Error Fetching lesson",error})
+    }   
+});
 
 module.exports=router;
 
