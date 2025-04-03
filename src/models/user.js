@@ -1,24 +1,50 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Name is required']
-    },
-    email: {
-        type: String,
-        required: [true, 'Email is required'],
-        unique: true,
-        match: [
-            /^\S+@\S+\.\S+$/, 
-            'Please provide a valid email address'
-        ]
-    },
-    password: {
-        type: String,
-        required: [true, 'Password is required'],
-        minlength: [6, 'Password must be at least 6 characters long']
-    }
-}, { timestamps: true });
 
-module.exports = mongoose.model('User', userSchema);
+const LessonProgressSchema= new mongoose.Schema({
+    lessonId:{
+        type:mongoose.Schema.Types.ObjectId, 
+        ref:'LessonContent'
+    },
+    status:{
+        type:String,
+        enum:["not-started","in-progress","completed"],
+        default:"not-started"
+    },
+    completedAt:{
+        type:Date
+    }
+});
+
+const GamificationSchema= new mongoose.Schema({
+    streak:{
+        type:Number,
+        default:0
+    },
+    badges:{
+        type:[String],
+        default:[]
+    },
+    updatedAt:{
+        type:Date,
+        default:Date.now
+    }
+});
+
+const UserSchema = new mongoose.Schema({
+    clerkUserId:{
+        type:String,
+        require:true,
+        unique:true
+    },
+    progress:{
+        type:[LessonProgressSchema],
+        default:[]
+    },
+    gamification:{
+        type:GamificationSchema,
+        default:()=>({})
+    }
+},{timestamps:true});
+
+module.exports = mongoose.model('User', UserSchema);
