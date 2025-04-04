@@ -11,7 +11,7 @@ router.get("/categories",async(req, res)=>{
     try{
         const categories=await LessonCategory.find();
         res.status(200).json(categories);
-    }catch{
+    }catch(error){
         res.status(500).json({message:"Error fetching categories",error});
     }
 });
