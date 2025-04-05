@@ -28,7 +28,7 @@ router.get("/lessons/category/:categoryID", async (req, res) => {
 
         const categoryObjectID= new mongoose.Types.ObjectId(categoryID)
         const lessons = await LessonContent.find({ category:categoryObjectID})
-            .select("title");
+            .select("title status");
 
 
         if (!lessons.length) {

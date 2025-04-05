@@ -8,7 +8,7 @@ const LessonProgressSchema= new mongoose.Schema({
     },
     status:{
         type:String,
-        enum:["not-started","in-progress","completed"],
+        enum:["not-started","completed"],
         default:"not-started"
     },
     completedAt:{
