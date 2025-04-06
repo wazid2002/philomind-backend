@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../models/user");                   
 const router = express.Router();
 
-router.patch("/syncLessons",(req,res)=>{
+router.patch("/syncLessons",async(req,res)=>{
     const { clerkUserId, lessonId, status } = req.body;
       
     if (!clerkUserId || !lessonId || typeof status !== "boolean") {
@@ -26,14 +26,18 @@ router.patch("/syncLessons",(req,res)=>{
         const newProgressEntries = missingLessons.map(id => 
         ({
             lessonId: id,
-            status: false}));
+            status: false
+        }));
         
           user.progress.push(...newProgressEntries);
           await user.save();
 
           res.status(200).json({ message: "Lessons synced successfully", added: newProgressEntries.length });  
-    }catch(error){  
-
-
+    }catch(error){
+        
+        console.error("Error syncing lessons for users:", error);
+        res.status(500).json({ message: "Server error", error: error.message });
     }
 });
+
+module.exports = router;  
