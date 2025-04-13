@@ -6,6 +6,7 @@ const profileRoutes= require("./src/routes/profileRoutes");
 const registerRoutes=require("./src/routes/registerRoute");
 const lessonProgress = require ("./src/routes/lessonProgress");
 const synclessons = require("./src/routes/synclessons");
+const aiRoute = require("./src/routes/aiRoute")
 const cors = require("cors")
 
 dotenv.config();
@@ -26,9 +27,11 @@ app.use("/api",profileRoutes);
 //connecting registerRoutes
 app.use("/api",registerRoutes);
 //connecting lessonProgress
-app.use("/api",lessonProgress)
+app.use("/api",lessonProgress);
 //connecting synclessons.js
-app.use("/api",synclessons)
+app.use("/api",synclessons);
+//connecting aiRoute
+app.use("/api",aiRoute);
 
 
 app.listen(process.env.PORT || 5000, () => {
