@@ -1,23 +1,27 @@
-const { GoogleGenAI } = require ("@google/genai");
-require('dotenv').config({path:"../.env"});
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+require('dotenv').config();
 
-const genAI = new GoogleGenAI(
-    {apikey:process.env.GEMINI_API_KEY,});
 
-async function* streamGeminiResponse(userMessage,History=[]){
-    const response=await genAI.models.generateContentStream({
-        model:"gemini-pro",
-        contents:userMessage,
-    })
-   
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+let chatInstance = null;
+//console.log("Loaded API Key:", process.env.GEMINI_API_KEY);
 
-    for await (const chunk of result.stream) {
-        const textChunk = chunk.text();
-        if (textChunk) {
-          yield textChunk;
-        }
-      }
-    
-};
 
-module.exports = {streamGeminiResponse};
+async function setupChat() {
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+
+  chatInstance = await model.startChat({
+    history: [],
+    generationConfig: {
+      maxOutputTokens: 500,
+    },
+  });
+}
+
+setupChat();
+
+function getChatInstance() {
+  return chatInstance;
+}
+
+module.exports = {getChatInstance};
